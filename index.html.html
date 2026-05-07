@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planes de edición · Joako</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f2ed;
+    --card: #fffefb;
+    --card-featured: #1a1a18;
+    --text: #1a1a18;
+    --text-muted: #8a8780;
+    --text-light: #b8b5b0;
+    --accent: #1a1a18;
+    --accent-light: #e8e4de;
+    --border: #e0dbd4;
+    --border-dark: #2e2e2a;
+    --green: #4a7c59;
+    --green-bg: #edf3ef;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    padding: 2rem 0 2.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+  }
+
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+    font-weight: 300;
+  }
+
+  .cards {
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+
+  .card.featured {
+    background: var(--card-featured);
+    border-color: var(--border-dark);
+    color: #f5f2ed;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .card.featured .card-title { color: #f5f2ed; }
+
+  .badge {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-top: 3px;
+  }
+
+  .badge-white {
+    background: rgba(245,242,237,0.15);
+    color: #f5f2ed;
+    border: 1px solid rgba(245,242,237,0.25);
+  }
+
+  .badge-green {
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid #c5daca;
+  }
+
+  .slider-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .slider-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .slider-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .card.featured .slider-label { color: #a09d98; }
+
+  .slider-value {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .card.featured .slider-value { color: #f5f2ed; }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    background: var(--border);
+  }
+
+  .card.featured input[type=range] { background: #3a3a36; }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--text);
+    cursor: pointer;
+    border: 3px solid var(--card);
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .card.featured input[type=range]::-webkit-slider-thumb {
+    background: #f5f2ed;
+    border-color: var(--card-featured);
+    box-shadow: 0 0 0 1px #555;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.25rem 0;
+  }
+
+  .card.featured .divider { border-color: #2e2e2a; }
+
+  .price-rows { display: flex; flex-direction: column; gap: 6px; }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .price-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .card.featured .price-label { color: #a09d98; }
+
+  .price-val {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .card.featured .price-val { color: #f5f2ed; }
+
+  .price-val.total {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  .card.featured .price-val.total { color: #f5f2ed; }
+
+  .price-val.green { color: var(--green); }
+  .card.featured .price-val.green { color: #7ec89a; }
+
+  .steps {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .card.featured .step { border-color: #2e2e2a; }
+  .steps .step:first-child { border-top: none; }
+
+  .step-num {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 16px;
+    padding-top: 1px;
+    letter-spacing: 0.05em;
+  }
+
+  .card.featured .step-num { color: #555; }
+
+  .step span {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.45;
+    font-weight: 300;
+  }
+
+  .card.featured .step span { color: #a09d98; }
+
+  .desde-nota {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 0.6rem;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .card.featured .desde-nota { color: #555; }
+
+  .pautas-section {
+    max-width: 420px;
+    margin: 1rem auto 0;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .pautas-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  .pautas-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .pauta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 9px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .pauta-item:first-child { border-top: none; }
+
+  .pauta-num {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-light);
+    min-width: 16px;
+    padding-top: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .pauta-text {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .pauta-text strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .descuento-pill {
+    display: inline-block;
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid #c5daca;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">@jjjoakolabarile</p>
+  <h1>Planes de<br>edición</h1>
+  <p>Mové el slider y ve el precio al instante</p>
+</header>
+
+<div class="cards">
+
+  <!-- MENSUAL -->
+  <div class="card featured">
+    <div class="card-header">
+      <h2 class="card-title">Plan mensual</h2>
+      <span class="badge badge-white">más elegido</span>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-top">
+        <span class="slider-label">Videos por mes</span>
+        <span class="slider-value" id="val-m">8 videos</span>
+      </div>
+      <input type="range" min="4" max="20" value="8" step="1" id="slider-m">
+    </div>
+
+    <hr class="divider">
+
+    <div class="price-rows">
+      <div class="price-row">
+        <span class="price-label">Precio por video</span>
+        <span class="price-val" id="ppv-m">$14.000</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Total del mes</span>
+        <span class="price-val total" id="total-m">$112.000</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Seña para arrancar (50%)</span>
+        <span class="price-val green" id="sena-m">$56.000</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Resto al terminar</span>
+        <span class="price-val" id="resto-m">$56.000</span>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><span class="step-num">01</span><span>Me decís cuántos videos querés al mes</span></div>
+      <div class="step"><span class="step-num">02</span><span>Mandás la seña y empezamos</span></div>
+      <div class="step"><span class="step-num">03</span><span>Me vas pasando los videos durante el mes</span></div>
+      <div class="step"><span class="step-num">04</span><span>Al terminar pagás el resto y vemos si renovamos</span></div>
+    </div>
+  </div>
+
+  <!-- SEMANAL -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Plan semanal</h2>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-top">
+        <span class="slider-label">Videos por semana</span>
+        <span class="slider-value" id="val-s">2 videos</span>
+      </div>
+      <input type="range" min="1" max="5" value="2" step="1" id="slider-s">
+    </div>
+
+    <hr class="divider">
+
+    <div class="price-rows">
+      <div class="price-row">
+        <span class="price-label">Precio por video</span>
+        <span class="price-val">$14.000</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Total semana</span>
+        <span class="price-val total" id="total-s">$28.000</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Seña para arrancar (50%)</span>
+        <span class="price-val green" id="sena-s">$14.000</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Resto al terminar la semana</span>
+        <span class="price-val" id="resto-s">$14.000</span>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><span class="step-num">01</span><span>Me decís cuántos videos necesitás por semana</span></div>
+      <div class="step"><span class="step-num">02</span><span>Mandás la seña y arrancamos</span></div>
+      <div class="step"><span class="step-num">03</span><span>Al terminar la semana pagás el resto</span></div>
+    </div>
+  </div>
+
+  <!-- DIARIO -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Plan diario</h2>
+      <span class="badge badge-green">máximo volumen</span>
+    </div>
+
+    <hr class="divider">
+
+    <div class="price-rows">
+      <div class="price-row">
+        <span class="price-label">1 video por día × 30 días</span>
+        <span class="price-val total">$285.000</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Seña para arrancar (50%)</span>
+        <span class="price-val green">$142.500</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Resto al terminar el mes</span>
+        <span class="price-val">$142.500</span>
+      </div>
+    </div>
+
+    <p class="desde-nota">Precio por video desde $9.500 · se acuerda por MD según el proyecto</p>
+
+    <div class="steps">
+      <div class="step"><span class="step-num">01</span><span>Hablamos y acordamos el precio según tu contenido</span></div>
+      <div class="step"><span class="step-num">02</span><span>Mandás la seña del mes completo y arrancamos</span></div>
+      <div class="step"><span class="step-num">03</span><span>Me pasás el material día a día</span></div>
+      <div class="step"><span class="step-num">04</span><span>Al terminar el mes pagás el resto</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="pautas-section">
+  <h3>Pautas de trabajo</h3>
+  <div class="pautas-card">
+    <div class="pauta-item">
+      <span class="pauta-num">01</span>
+      <span class="pauta-text">El pago se realiza únicamente por <strong>transferencia bancaria</strong>.</span>
+    </div>
+    <div class="pauta-item">
+      <span class="pauta-num">02</span>
+      <span class="pauta-text">El trabajo comienza una vez recibido el <strong>comprobante de pago</strong>.</span>
+    </div>
+    <div class="pauta-item">
+      <span class="pauta-num">03</span>
+      <span class="pauta-text">Se abona el <strong>50% de seña</strong> antes de iniciar y el <strong>50% restante</strong> al entregar el trabajo terminado.</span>
+    </div>
+    <div class="pauta-item">
+      <span class="pauta-num">04</span>
+      <span class="pauta-text">El plazo de entrega es de <strong>24 a 72hs</strong>. En planes mensuales puede extenderse hasta <strong>96hs</strong>.</span>
+    </div>
+    <div class="pauta-item">
+      <span class="pauta-num">05</span>
+      <span class="pauta-text">La <strong>seña no es reembolsable</strong> una vez iniciado el trabajo.</span>
+    </div>
+    <div class="pauta-item">
+      <span class="pauta-num">06</span>
+      <span class="pauta-text">El material debe enviarse en <strong>orden cronológico</strong> junto con los detalles del video (subtítulos, tipografía, referencias, etc.)</span>
+    </div>
+    <div class="pauta-item">
+      <span class="pauta-num">07</span>
+      <span class="pauta-text"><span class="descuento-pill">15% OFF</span> en el saldo final si se <strong>etiqueta al editor</strong> en la publicación al momento de subir el video.</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="https://instagram.com/jjjoakolabarile">@jjjoakolabarile</a>
+</footer>
+
+<script>
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('es-AR');
+  }
+
+  const sliderM = document.getElementById('slider-m');
+  function updateM() {
+    const v = parseInt(sliderM.value);
+    const ppv = v >= 12 ? 12000 : v >= 8 ? 14000 : 17000;
+    const total = v * ppv;
+    const sena = total / 2;
+    document.getElementById('val-m').textContent = v + ' video' + (v !== 1 ? 's' : '');
+    document.getElementById('ppv-m').textContent = fmt(ppv);
+    document.getElementById('total-m').textContent = fmt(total);
+    document.getElementById('sena-m').textContent = fmt(sena);
+    document.getElementById('resto-m').textContent = fmt(sena);
+  }
+  sliderM.addEventListener('input', updateM);
+  updateM();
+
+  const sliderS = document.getElementById('slider-s');
+  function updateS() {
+    const v = parseInt(sliderS.value);
+    const total = v * 14000;
+    const sena = total / 2;
+    document.getElementById('val-s').textContent = v + ' video' + (v !== 1 ? 's' : '');
+    document.getElementById('total-s').textContent = fmt(total);
+    document.getElementById('sena-s').textContent = fmt(sena);
+    document.getElementById('resto-s').textContent = fmt(sena);
+  }
+  sliderS.addEventListener('input', updateS);
+  updateS();
+</script>
+
+</body>
+</html>
